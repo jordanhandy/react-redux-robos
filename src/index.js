@@ -3,17 +3,18 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./containers/App";
-import { Provider, connect } from "react-redux"; // For Redux
-import { createStore } from 'redux'; // For Redux
+import { Provider } from "react-redux"; // For Redux
+import { createStore, applyMiddleware } from 'redux'; // For Redux
 import { searchRobots } from "./reducers"; // For Redux
+import { createLogger } from 'redux-logger'; // Redux Logging
 import "tachyons";
 // Destructured import, as we are not exporting
 // the "default" as done prior, so must de-structure
 // and declare what we are exporting
 import reportWebVitals from "./reportWebVitals";
 
-
-const store = createStore(searchRobots); // For Redux
+const logger = createLogger(); // Redux logging
+const store = createStore(searchRobots, applyMiddleware(logger)); // For Redux
 
 // React render the DOM Tree
 ReactDOM.render(
