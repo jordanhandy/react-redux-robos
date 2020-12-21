@@ -14,7 +14,7 @@ import { setSearchField } from '../actions';
 // that is, state.searchRobots.searchField
 const mapStateToProps = state => {
   return {
-    searchField: state.searchRobots.searchField
+    searchField: state.searchField
   }
 }
 // What props that should be listened to, that are actions that need to get actioned
@@ -40,8 +40,7 @@ class App extends Component {
     super();
     // define the 'state' object
     this.state = {
-      robots: [],
-      searchfield: "",
+      robots: []
     };
   }
   // use React lifecycle method to call componentDidMount() and create a GET
@@ -62,16 +61,13 @@ class App extends Component {
   // the function action on state.
   // You need to use the functionName = (params) => { syntax so that when you call 'this', the app
   // knows that you are referring to the parent, and not the event in question, sent as params
-  onSearchChange = (event) => {
-    // set the state of the searchfield to equal that of the value being typed into the searchfield
-    this.setState({ searchfield: event.target.value });
-  };
 
   render() {
-    const { robots, searchfield } = this.state;
+    const { robots } = this.state;
+    const { searchField, onSearchChange } = this.props
     // your constant then becomes a filtered list of robots, based on what is put into the searchfield
     const filteredRobots = robots.filter((robot) => {
-      return robot.name.toLowerCase().includes(searchfield.toLowerCase());
+      return robot.name.toLowerCase().includes(searchField.toLowerCase());
     });
     // ternary operator.  If robots.length is equal to 0, display "Loading..."
     // if not, display the robots
@@ -81,7 +77,7 @@ class App extends Component {
       <div className="tc">
         <h1 className="f1">RoboFriends</h1>
         {/* the onSearchChange prop is sent to the searchBox */}
-        <SearchBox searchChange={this.onSearchChange} />
+        <SearchBox searchChange={onSearchChange} />
         {/* instead of a constant list of 10 robots, you then set the value of robots to be the list of filteredRobots */}
         {/* Wrap our card list in the Error Boundary to catch if anything went wrong */}
         <ErrorBoundry>
