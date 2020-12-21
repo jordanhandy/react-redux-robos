@@ -3,7 +3,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./containers/App";
-import { Provider } from "react-redux"; // For Redux
+import { Provider, connect } from "react-redux"; // For Redux
 import { createStore } from 'redux'; // For Redux
 import { searchRobots } from "./reducers"; // For Redux
 import "tachyons";

@@ -1,11 +1,28 @@
 // import deconstructed { Component } from 'react'
 import React, { Component } from "react";
+import { connect } from 'react-redux';
 import CardList from "../components/CardList";
 import SearchBox from "../components/SearchBox";
 import Scroll from "../components/Scroll";
 // Error Boundary introduced in React 16
 import ErrorBoundry from "../components/ErrorBoundary";
 import "./App.css";
+import { setSearchField } from '../actions';
+
+// The state to be used for the reducer property (searchField) is going to come from the 
+// state.reducerName.property
+// that is, state.searchRobots.searchField
+const mapStateToProps = state => {
+  return {
+    searchField: state.searchRobots.searchField
+  }
+}
+// What props that should be listened to, that are actions that need to get actioned
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onSearchChange: (event) => dispatch(setSearchField(event.target.value))
+  }
+}
 
 // Basic construct of State in react
 // Your App extends the Component class
@@ -76,4 +93,4 @@ class App extends Component {
     );
   }
 }
-export default App;
+export default connect(mapStateToProps,mapDispatchToProps)(App);
