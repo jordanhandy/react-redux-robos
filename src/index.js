@@ -1,21 +1,28 @@
 // React base
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './containers/App';
-import 'tachyons';
+import React from "react";
+import ReactDOM from "react-dom";
+import "./index.css";
+import App from "./containers/App";
+import { Provider } from "react-redux"; // For Redux
+import { createStore } from 'redux'; // For Redux
+import { searchRobots } from "./reducers"; // For Redux
+import "tachyons";
 // Destructured import, as we are not exporting
 // the "default" as done prior, so must de-structure
 // and declare what we are exporting
-import reportWebVitals from './reportWebVitals';
+import reportWebVitals from "./reportWebVitals";
+
+
+const store = createStore(searchRobots); // For Redux
 
 // React render the DOM Tree
 ReactDOM.render(
   <React.StrictMode>
-  <App />
-
+    <Provider store={store}>
+      <App />
+    </Provider>
   </React.StrictMode>,
-  document.getElementById('root')
+  document.getElementById("root")
 );
 
 // If you want to start measuring performance in your app, pass a function
