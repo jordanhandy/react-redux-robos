@@ -7,20 +7,24 @@ import Scroll from "../components/Scroll";
 // Error Boundary introduced in React 16
 import ErrorBoundry from "../components/ErrorBoundary";
 import "./App.css";
-import { setSearchField } from '../actions';
+import { setSearchField, requestRobots } from '../actions';
 
 // The state to be used for the reducer property (searchField) is going to come from the 
 // state.reducerName.property
 // that is, state.searchRobots.searchField
 const mapStateToProps = state => {
   return {
-    searchField: state.searchField
+    searchField: state.searchRobots.searchField,
+    robots: state.requestRobots.robots,
+    isPending: state.requestRobots.isPending,
+    error: state.requestRobots.error
   }
 }
 // What props that should be listened to, that are actions that need to get actioned
 const mapDispatchToProps = (dispatch) => {
   return {
-    onSearchChange: (event) => dispatch(setSearchField(event.target.value))
+    onSearchChange: (event) => dispatch(setSearchField(event.target.value)),
+    onRequestRobots: () => dispatch(requestRobots())
   }
 }
 
@@ -36,26 +40,13 @@ const mapDispatchToProps = (dispatch) => {
 class App extends Component {
   // call the base class
   // call super
-  constructor() {
-    super();
-    // define the 'state' object
-    this.state = {
-      robots: []
-    };
-  }
   // use React lifecycle method to call componentDidMount() and create a GET
   // request to an API endpoint.  This endpoint holds the data we need, so the static
   // robots.txt data file is not needed
 
   // JSON-formatted response is returned, then this is set as the new state of the 'robots' prop
   componentDidMount() {
-    fetch("https://jsonplaceholder.typicode.com/users")
-      .then((response) => {
-        return response.json();
-      })
-      .then((users) => {
-        this.setState({ robots: users });
-      });
+    this.props.onRequestRobots();
   }
 
   // the function action on state.
@@ -63,15 +54,14 @@ class App extends Component {
   // knows that you are referring to the parent, and not the event in question, sent as params
 
   render() {
-    const { robots } = this.state;
-    const { searchField, onSearchChange } = this.props
+    const { searchField, onSearchChange, robots, isPending } = this.props
     // your constant then becomes a filtered list of robots, based on what is put into the searchfield
     const filteredRobots = robots.filter((robot) => {
       return robot.name.toLowerCase().includes(searchField.toLowerCase());
     });
     // ternary operator.  If robots.length is equal to 0, display "Loading..."
     // if not, display the robots
-    return !robots.length ? (
+    return isPending ? (
       <h1>Loading...</h1>
     ) : (
       <div className="tc">

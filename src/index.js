@@ -4,9 +4,10 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./containers/App";
 import { Provider } from "react-redux"; // For Redux
-import { createStore, applyMiddleware } from 'redux'; // For Redux
-import { searchRobots } from "./reducers"; // For Redux
+import { createStore, applyMiddleware, combineReducers } from 'redux'; // For Redux
+import { searchRobots, requestRobots } from "./reducers"; // For Redux
 import { createLogger } from 'redux-logger'; // Redux Logging
+import thunkMiddleware from 'redux-thunk';
 import "tachyons";
 // Destructured import, as we are not exporting
 // the "default" as done prior, so must de-structure
@@ -14,7 +15,8 @@ import "tachyons";
 import reportWebVitals from "./reportWebVitals";
 
 const logger = createLogger(); // Redux logging
-const store = createStore(searchRobots, applyMiddleware(logger)); // For Redux
+const rootReducer = combineReducers({searchRobots,requestRobots});
+const store = createStore(rootReducer, applyMiddleware(thunkMiddleware, logger)); // For Redux
 
 // React render the DOM Tree
 ReactDOM.render(
